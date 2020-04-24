@@ -35,7 +35,7 @@ def newchannel(message,chan):
                                   database = "d7tofl99vg7pq2")
     channe = str(chan)
     cursor = connection.cursor()
-    sql_select_query = """SELECT kanal FROM grs WHERE grid = %s""
+    sql_select_query = """SELECT kanal FROM grs WHERE grid = %s"""
     cursor.execute(sql_select_query, (message.chat.id, ))
     record = cursor.fetchone()
     msg = str(record)
