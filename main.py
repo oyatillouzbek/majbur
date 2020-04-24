@@ -70,9 +70,9 @@ def lalala(message):
 	if message.chat.type == 'supergroup':
 		if  '/set' in message.text:
 			channel=message.text.replace('/set ','').split(" ",1)[0]
-			status = ['creator', 'administrator', 'member']
+			status = ['creator', 'administrator']
 			for chri in status:
-				if chri == bot.get_chat_member(chat_id=str(channel), user_id="@Tillo2553bot").status:
+				if chri == bot.get_chat_member(chat_id=str(channel), user_id=meddage.from_user.id).status:
 					newchannel(message,channel)
 					break
 				else:
