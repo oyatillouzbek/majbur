@@ -7,6 +7,7 @@ host = "ec2-54-210-128-153.compute-1.amazonaws.com"
 database = "d7tofl99vg7pq2"
 port = 5432
 
+
 bot = telebot.TeleBot("931190511:AAEuhHmrIiN5Lc_lNQq-ANjeauytWH2i5Gc")
 
 
@@ -34,12 +35,18 @@ def delete_all(message):
         cursor.execute("TRUNCATE grs")
     connection.close()
 
+
+@bot.message_handler(commands=['getall'])
+def getall(message):
+    get_data(message)
+
+
 @bot.message_handler(content_types=['text'])
 def lalala(message):
     if message.chat.type == 'supergroup':
         if '/set' in message.text:
             channel = message.text.replace('/set ', '').split()[0]
-            is_admin = bot.get_chat_member(chat_id=channel, user_id=message.from_user.id).can_delete_messages
+            is_admin = bot.get_chat_member(chat_id=int(channel), user_id=message.from_user.id).can_delete_messages
             if is_admin:
                 new_channel(message, channel)
             else:
@@ -51,12 +58,29 @@ def lalala(message):
 def check(message):
     connection = psycopg2.connect(host=host, database=database, user=username, password=password, port=port)
     with connection.cursor() as cursor:
-        cursor.execute("SELECT kanal FROM grs WHERE grid = %s", str(message.chat.id))
+        cursor.execute("SELECT kanal FROM grs WHERE grid = %s", message.chat.id)
     result = cursor.fetchone()
     connection.close()
     if result is None:
         return False
     return True
+
+
+def get_data(message):
+    chat_id = message.chat.id
+    msg = ""
+    connection = psycopg2.connect(host=host, database=database, user=username, password=password, port=port)
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT kanal FROM grs WHERE grid = %s", chat_id)
+        result = cursor.fetchall()
+
+    for x in result:
+        msg += "{}\n".format(x)
+    if msg is None:
+        bot.send_message(message.chat.id, "Hech narsa yoq")
+    else:
+        bot.send_message(message.chat.id, msg)
+    connection.close()
 
 
 def new_channel(message, chan):
@@ -79,8 +103,6 @@ def new_channel(message, chan):
             cursor.execute(sql_update_query, (channel, message.chat.id))
         bot.send_message(message.chat.id, "Guruhingiz kanalingizga qayta ulandi." + msg)
         connection.close()
-
-
 
 
 bot.polling(none_stop=True)
