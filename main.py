@@ -46,7 +46,7 @@ def lalala(message):
     if message.chat.type == 'supergroup':
         if '/set' in message.text:
             channel = message.text.replace('/set ', '').split()[0]
-            is_admin = bot.get_chat_member(chat_id=int(channel), user_id=message.from_user.id).can_delete_messages
+            is_admin = bot.get_chat_member(chat_id=str(channel), user_id=message.from_user.id).can_delete_messages
             if is_admin:
                 new_channel(message, channel)
             else:
