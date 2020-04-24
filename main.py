@@ -16,14 +16,14 @@ def chek(message):
             
 def getdata(message):
 	chatid = message.chat.id
-        chatidd = int(chatid)
+	chatidd = int(chatid)
 	msg = ""
 	connection = psycopg2.connect(user = "thzrixmbpxycue",password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",host = "ec2-54-210-128-153.compute-1.amazonaws.com",database = "d7tofl99vg7pq2")
 	cursorr = connection.cursor()
 	cursorr.execute("SELECT kanal FROM grs WHERE grid=" + chatidd)
 	resultt = cursorr.fetchall()
 	for x in resultt:
-		msg += "{}".format(x[0])
+		msg += "{}\n".format(x[0])
 	if msg is None:
 		bot.send_message(message.chat.id, "Hech narsa yoq")
 	else:
