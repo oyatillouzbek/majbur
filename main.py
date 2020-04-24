@@ -42,6 +42,7 @@ def newchannel(message,chan):
     cursor.execute(sql_select_query, (message.chat.id, ))
     record = cursor.fetchone()
     msg = str(record)
+    record = iter(record)
     if  channe not in record:
         sql_update_query = """INSERT INTO grs (grid, userid, kanal) VALUES (%s, %s, %s)"""
         cursor.execute(sql_update_query, (message.chat.id,message.from_user.id,channe))
