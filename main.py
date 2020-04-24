@@ -61,7 +61,8 @@ bot = telebot.TeleBot("931190511:AAEuhHmrIiN5Lc_lNQq-ANjeauytWH2i5Gc")
 @bot.message_handler(commands=['start'])
 def welcome(message):
 	if message.chat.type == 'private':
-	    bot.send_message(message.from_user.id, """Assalomu alaykum.""",parse_mode='html')
+	    chatid = str(message.from_user.id)
+	    bot.send_message(message.from_user.id, "Assalomu alaykum." + chatid,parse_mode='html')
 
 @bot.message_handler(commands=['dellall'])
 def dellall(message):
