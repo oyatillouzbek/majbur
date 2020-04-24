@@ -34,12 +34,6 @@ def delete_all(message):
         cursor.execute("TRUNCATE grs")
     connection.close()
 
-
-@bot.message_handler(commands=['getall'])
-def getall(message):
-    get_data(message)
-
-
 @bot.message_handler(content_types=['text'])
 def lalala(message):
     if message.chat.type == 'supergroup':
@@ -63,23 +57,6 @@ def check(message):
     if result is None:
         return False
     return True
-
-
-def get_data(message):
-    chat_id = message.chat.id
-    msg = ""
-    connection = psycopg2.connect(host=host, database=database, user=username, password=password, port=port)
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT kanal FROM grs WHERE grid = %s", int(chat_id))
-        result = cursor.fetchall()
-
-    for x in result:
-        msg += "{}\n".format(x)
-    if msg is None:
-        bot.send_message(message.chat.id, "Hech narsa yoq")
-    else:
-        bot.send_message(message.chat.id, msg)
-    connection.close()
 
 
 def new_channel(message, chan):
