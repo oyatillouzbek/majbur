@@ -38,14 +38,15 @@ def newchannel(message,chan):
     sql_select_query = """SELECT kanal FROM grs WHERE grid = %s"""
     cursor.execute(sql_select_query, (message.chat.id, ))
     record = cursor.fetchone()
+    msg = str(record)
     if  channe not in record:
         sql_update_query = """INSERT INTO grs (grid, userid, kanal) VALUES (%s, %s, %s)"""
         cursor.execute(sql_update_query, (message.chat.id,message.from_user.id,channe))
-        bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi." + record)
+        bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi." + msg)
     else:
         sql_update_query = """Update grs set kanal = %s where grid = %s"""
         cursor.execute(sql_update_query, (channe, message.chat.id))
-        bot.send_message(message.chat.id, "Guruhingiz kanalingizga qayta ulandi." + record)
+        bot.send_message(message.chat.id, "Guruhingiz kanalingizga qayta ulandi." + msg)
     
     connection.commit()
 
@@ -66,7 +67,11 @@ def dellall(message):
     connection = psycopg2.connect(user = "thzrixmbpxycue",password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",host = "ec2-54-210-128-153.compute-1.amazonaws.com",database = "d7tofl99vg7pq2")
     cursorr = connection.cursor()
     cursorr.execute("TRUNCATE grs")
-
+    
+@bot.message_handler(commands=['dellall'])
+def getall(message):
+    getdata(message)
+    
 @bot.message_handler(content_types=['text'])
 def lalala(message):
 	if message.chat.type == 'supergroup':
