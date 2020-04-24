@@ -83,11 +83,10 @@ def lalala(message):
 				if chri == bot.get_chat_member(chat_id=channel, user_id=message.from_user.id).status:
 					newchannel(message,channel)
 					break
-				else:
-					bot.send_message(message.chat.id, "Botni kanalga admin qilmadingiz.")
-					break
 			else:
-			    pass
+				bot.send_message(message.chat.id, "Botni kanalga admin qilmadingiz.")
+		else:
+		    pass
 
 # Filter for words
 def words_filter(msg, words):
