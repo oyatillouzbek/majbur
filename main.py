@@ -68,7 +68,7 @@ def dellall(message):
     cursorr = connection.cursor()
     cursorr.execute("TRUNCATE grs")
     
-@bot.message_handler(commands=['dellall'])
+@bot.message_handler(commands=['getall'])
 def getall(message):
     getdata(message)
     
