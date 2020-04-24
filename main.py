@@ -20,13 +20,13 @@ def getdata(message):
 	connection = psycopg2.connect(user = "thzrixmbpxycue",password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",host = "ec2-54-210-128-153.compute-1.amazonaws.com",database = "d7tofl99vg7pq2")
 	cursorr = connection.cursor()
 	cursorr.execute("SELECT kanal FROM grs WHERE grid=chatid")
-	resultt = cursorr.fetchone()
+	resultt = cursorr.fetchall()
 	for x in resultt:
 		msg += "{}".format(x[0])
 	if msg is None:
-		print("false")
+		bot.send_message(message.chat.id, "Hech narsa yoq")
 	else:
-		print("true")
+		bot.send_message(message.chat.id, msg)
             
 def newchannel(message,chan):
     connection = psycopg2.connect(user = "thzrixmbpxycue",
@@ -38,16 +38,14 @@ def newchannel(message,chan):
     sql_select_query = """SELECT kanal FROM grs WHERE grid = %s"""
     cursor.execute(sql_select_query, (message.chat.id, ))
     record = cursor.fetchone()
-    msg = str(record)
-    fromid = str(channe)
-    if  fromid not in msg:
+    if  channe not in record:
         sql_update_query = """INSERT INTO grs (grid, userid, kanal) VALUES (%s, %s, %s)"""
         cursor.execute(sql_update_query, (message.chat.id,message.from_user.id,channe))
-        bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi." + msg)
+        bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi." + record)
     else:
         sql_update_query = """Update grs set kanal = %s where grid = %s"""
-        cursor.execute(sql_update_query, (chan, message.chat.id))
-        bot.send_message(message.chat.id, "Guruhingiz kanalingizga qayta ulandi.")
+        cursor.execute(sql_update_query, (channe, message.chat.id))
+        bot.send_message(message.chat.id, "Guruhingiz kanalingizga qayta ulandi." + record)
     
     connection.commit()
 
