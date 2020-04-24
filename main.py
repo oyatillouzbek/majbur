@@ -72,7 +72,7 @@ def lalala(message):
 			channel=message.text.replace('/set ','').split(" ",1)[0]
 			status = ['creator', 'administrator']
 			for chri in status:
-				if chri == bot.get_chat_member(chat_id=str(channel), user_id=meddage.from_user.id).status:
+				if chri == bot.get_chat_member(chat_id=str(channel), user_id=message.from_user.id).status:
 					newchannel(message,channel)
 					break
 				else:
