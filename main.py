@@ -48,8 +48,6 @@ def newchannel(message,chan):
         sql_update_query = """Update grs set kanal = %s where grid = %s"""
         cursor.execute(sql_update_query, (channe, message.chat.id))
         bot.send_message(message.chat.id, "Guruhingiz kanalingizga qayta ulandi." + msg)
-    
-    connection.commit()
 
 username = "thzrixmbpxycue"
 password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c"
