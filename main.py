@@ -70,7 +70,7 @@ def get_data(message):
     msg = ""
     connection = psycopg2.connect(host=host, database=database, user=username, password=password, port=port)
     with connection.cursor() as cursor:
-        cursor.execute("SELECT kanal FROM grs WHERE grid = %s", str(chat_id))
+        cursor.execute("SELECT kanal FROM grs WHERE grid = %s", chat_id)
         result = cursor.fetchall()
 
     for x in result:
