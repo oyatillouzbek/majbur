@@ -28,7 +28,8 @@ def getdata(message):
 		bot.send_message(message.chat.id, "Hech narsa yoq")
 	else:
 		bot.send_message(message.chat.id, msg)
-            
+		connection.close()
+		
 def newchannel(message,chan):
     connection = psycopg2.connect(user = "thzrixmbpxycue",
                                   password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",
@@ -48,6 +49,7 @@ def newchannel(message,chan):
         sql_update_query = """Update grs set kanal = %s where grid = %s"""
         cursor.execute(sql_update_query, (channe, message.chat.id))
         bot.send_message(message.chat.id, "Guruhingiz kanalingizga qayta ulandi." + msg)
+        connection.close()
 
 username = "thzrixmbpxycue"
 password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c"
@@ -67,7 +69,7 @@ def dellall(message):
     connection = psycopg2.connect(user = "thzrixmbpxycue",password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",host = "ec2-54-210-128-153.compute-1.amazonaws.com",database = "d7tofl99vg7pq2")
     cursorr = connection.cursor()
     cursorr.execute("TRUNCATE grs")
-    
+    connection.close()
 @bot.message_handler(commands=['getall'])
 def getall(message):
     getdata(message)
