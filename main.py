@@ -67,7 +67,7 @@ def welcome(message):
 def dellall(message):
     connection = psycopg2.connect(user = "thzrixmbpxycue",password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",host = "ec2-54-210-128-153.compute-1.amazonaws.com",database = "d7tofl99vg7pq2")
     cursorr = connection.cursor()
-    cursorr.execute("TRUNCATE users")
+    cursorr.execute("TRUNCATE grs")
 
 @bot.message_handler(content_types=['text'])
 def lalala(message):
