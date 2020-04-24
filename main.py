@@ -39,11 +39,11 @@ def newchannel(message,chan):
     cursor.execute(sql_select_query)
     record = cursor.fetchone()
     msg = str(record)
-    fromid = str(chan)
+    fromid = str(channe)
     if  fromid not in msg:
         sql_update_query = """INSERT INTO grs (grid, userid, kanal) VALUES (%s, %s, %s)"""
         cursor.execute(sql_update_query, (message.chat.id,message.from_user.id,channe))
-        bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi." + channe)
+        bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi." + msg)
     else:
         sql_update_query = """Update grs set kanal = %s where grid = %s"""
         cursor.execute(sql_update_query, (chan, message.chat.id))
