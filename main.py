@@ -77,6 +77,7 @@ def lalala(message):
 					break
 				else:
 					bot.send_message(message.chat.id, "Botni kanalga admin qilmadingiz.")
+                                        break
 
 
 # Filter for words
