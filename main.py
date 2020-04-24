@@ -60,8 +60,14 @@ bot = telebot.TeleBot("931190511:AAEuhHmrIiN5Lc_lNQq-ANjeauytWH2i5Gc")
 
 @bot.message_handler(commands=['start'])
 def welcome(message):
-	bot.send_message(message.chat.id, """Assalomu alaykum.""",parse_mode='html')
+	if message.chat.type == 'private':
+	    bot.send_message(message.chat.id, """Assalomu alaykum.""",parse_mode='html')
 
+@bot.message_handler(commands=['dellall'])
+def dellall(message):
+    connection = psycopg2.connect(user = "thzrixmbpxycue",password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",host = "ec2-54-210-128-153.compute-1.amazonaws.com",database = "d7tofl99vg7pq2")
+    cursorr = connection.cursor()
+    cursorr.execute("TRUNCATE users")
 
 @bot.message_handler(content_types=['text'])
 def lalala(message):
@@ -76,6 +82,8 @@ def lalala(message):
 				else:
 					bot.send_message(message.chat.id, "Botni kanalga admin qilmadingiz.")
 					break
+			else:
+			    pass
 
 # Filter for words
 def words_filter(msg, words):
