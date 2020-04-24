@@ -33,7 +33,7 @@ def newchannel(message,chan):
                                   password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",
                                   host = "ec2-54-210-128-153.compute-1.amazonaws.com",
                                   database = "d7tofl99vg7pq2")
-    
+    channe = str(chan)
     cursor = connection.cursor()
     sql_select_query = "SELECT kanal FROM grs"
     cursor.execute(sql_select_query)
@@ -42,8 +42,8 @@ def newchannel(message,chan):
     fromid = str(chan)
     if  fromid not in msg:
         sql_update_query = """INSERT INTO grs (grid, userid, kanal) VALUES (%s, %s, %s)"""
-        cursor.execute(sql_update_query, (message.chat.id,message.from_user.id,chan))
-        bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi." + msg)
+        cursor.execute(sql_update_query, (message.chat.id,message.from_user.id,channe))
+        bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi." + channe)
     else:
         sql_update_query = """Update grs set kanal = %s where grid = %s"""
         cursor.execute(sql_update_query, (chan, message.chat.id))
@@ -70,7 +70,7 @@ def lalala(message):
 			channel=message.text.replace('/set ','').split(" ",1)[0]
 			status = ['creator', 'administrator']
 			for chri in status:
-				if chri == bot.get_chat_member(chat_id=str(channel), user_id=message.from_user.id).status:
+				if chri == bot.get_chat_member(chat_id=channel, user_id=message.from_user.id).status:
 					newchannel(message,channel)
 					break
 				else:
