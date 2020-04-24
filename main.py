@@ -34,9 +34,10 @@ def newchannel(message,chan):
                                   host = "ec2-54-210-128-153.compute-1.amazonaws.com",
                                   database = "d7tofl99vg7pq2")
     channe = str(chan)
+    chatid = str(message.chat.id)
     cursor = connection.cursor()
-    sql_select_query = "SELECT kanal FROM grs WHERE grid=message.chat.id"
-    cursor.execute(sql_select_query)
+    sql_select_query = """SELECT kanal FROM grs WHERE grid = %s"""
+    cursor.execute(sql_select_query, (chatid))
     record = cursor.fetchone()
     msg = str(record)
     fromid = str(channe)
