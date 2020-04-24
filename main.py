@@ -1,26 +1,34 @@
 import telebot
 import time
-from telebot import types
 import psycopg2
 
-def getdata(message):
+def chek(message):
     connection = psycopg2.connect(user = "thzrixmbpxycue",
                                   password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",
                                   host = "ec2-54-210-128-153.compute-1.amazonaws.com",
                                   database = "d7tofl99vg7pq2")
-    msg = ""
     cursorr = connection.cursor()
-    sql = "SELECT * FROM grs"
+    sql = "SELECT kanal FROM grs WHERE grid=message.chat.id"
     cursorr.execute(sql)
-    resultt = cursorr.fetchall()
-    for x in resultt:
-        msg += "{}\n".format(x[0])
-    if msg is None:
-        bot.send_message(message.chat.id, "hech  narsa yoq")
-    else:
-        bot.send_message(message.chat.id, msg)
+    resultt = cursorr.fetchone()
+    if resultt is None:
+    	return False
             
-def newuser(message):
+def getdata(message):
+	chatid = message.chat.id
+	msg = ""
+	connection = psycopg2.connect(user = "thzrixmbpxycue",password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",host = "ec2-54-210-128-153.compute-1.amazonaws.com",database = "d7tofl99vg7pq2")
+	cursorr = connection.cursor()
+	cursorr.execute("SELECT kanal FROM grs WHERE grid=chatid")
+	resultt = cursorr.fetchone()
+	for x in resultt:
+		msg += "{}".format(x[0])
+	if msg is None:
+		print("false")
+	else:
+		print("true")
+            
+def newchannel(message,chan):
     connection = psycopg2.connect(user = "thzrixmbpxycue",
                                   password = "7184838441baf33aa0986afeca61e726ab610163a77c357087e3e826fc71fc5c",
                                   host = "ec2-54-210-128-153.compute-1.amazonaws.com",
@@ -28,18 +36,20 @@ def newuser(message):
      
     msg = ""
     cursor = connection.cursor()
-    sql_select_query = "SELECT * FROM grs"
+    sql_select_query = "SELECT kanal FROM grs"
     cursor.execute(sql_select_query)
-    record = cursor.fetchall()
+    record = cursor.fetchone()
     for x in record:
-        msg += "{}\n".format(x[0])
-        fromid = str(message.from_user.id)
+        msg += "{}".format(x[0])
+        fromid = str(chan)
     if  fromid not in msg:
         sql_update_query = """INSERT INTO grs (grid, userid, kanal) VALUES (%s, %s, %s)"""
-        cursor.execute(sql_update_query, (message.chat.id,message.from_user.id,''))
-        bot.send_message(message.chat.id, "Bazaga yozildi")
+        cursor.execute(sql_update_query, (message.chat.id,message.from_user.id,chan))
+        bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi.")
     else:
-        bot.send_message(message.chat.id, "avvaldan borsiz")
+        sql_update_query = """Update mobile set kanal = %s where grid = %s"""
+        cursor.execute(sql_update_query, (chan, message.chat.id))
+        bot.send_message(message.chat.id, "Guruhingiz kanalingizga qayta ulandi.")
     
     connection.commit()
 
@@ -49,71 +59,24 @@ hostname = "gdt"
 database = "d7tofl99vg7pq2"
 
 bot = telebot.TeleBot("931190511:AAEuhHmrIiN5Lc_lNQq-ANjeauytWH2i5Gc")
-restricted_messages = ["zzz", "zver"]
-
-@bot.message_handler(commands=['add'])
-def addata(message):
-    newuser(message)
-
-@bot.message_handler(commands=['getdata'])
-def gett(message):
-    getdata(message)
-
-@bot.inline_handler(lambda query: query.query == "Telegram")
-def query_text(inline_query):
-    r = types.InlineQueryResultArticle('1', 'Instagram', types.InputTextMessageContent('Instagramni bosdingiz'))
-    r2 = types.InlineQueryResultArticle('2', 'Telegram', types.InputTextMessageContent('Telegramni bosdingiz'))
-    bot.answer_inline_query(inline_query.id, [r, r2],cache_time=1)
-
-@bot.message_handler(commands=['switch'])
-def switch(message):
-    markup = types.InlineKeyboardMarkup()
-    switch_button = types.InlineKeyboardButton(text='Try', switch_inline_query="Telegram")
-    markup.add(switch_button)
-    bot.send_message(message.chat.id, "Chat turini tanlang", reply_markup=markup)
 
 @bot.message_handler(commands=['start'])
 def welcome(message):
-    # Keyboard
-    button_hi = types.KeyboardButton("Go")
-    start_kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    start_kb.add(button_hi)
-
-    bot.send_message(message.chat.id, "Id {} Time: {}".format(message.from_user.id, time.time()), parse_mode='html',
-                     reply_markup=start_kb)
-
-
-@bot.message_handler(func=lambda msg: words_filter(msg, restricted_messages))
-def set_ro(message):
-    firstname = message.from_user.first_name
-    chat_id = message.chat.id
-    user_id = message.from_user.id
-    bot.restrict_chat_member(chat_id, user_id, message.date + 600, False)
-    bot.send_message(chat_id, "{} you have muted for an hour".format(firstname))
+	bot.send_message(message.chat.id, """Assalomu alaykum.""",parse_mode='html')
 
 
 @bot.message_handler(content_types=['text'])
 def lalala(message):
-    button_next = types.KeyboardButton("davom etish")
-    next_kb = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    next_kb.add(button_next)
-    if message.chat.type == 'private':
-        if message.text == "Go":
-            bot.send_message(message.chat.id, "Siz deaderuz kanaliga azo emassiz.", reply_markup=next_kb)
-        elif message.text == 'davom etish':
-            button_next2 = types.KeyboardButton("Ok")
-            next_kb2 = types.ReplyKeyboardMarkup(resize_keyboard=True)
-            next_kb2.add(button_next2)
-            status = ['creator', 'administrator', 'member']
-            for chri in status:
-                if chri == bot.get_chat_member(chat_id="@deaderuz", user_id=message.chat.id).status:
-                    bot.send_message(message.chat.id, "Azo boldingiz")
-                    break
-            else:
-                bot.send_message(message.chat.id, "Azo bolmadingiz!")
-        else:
-            pass
-
+	if message.chat.type == 'supergroup':
+		if  '/set' in message.text:
+			channel=message.text.replace('/set ','').split(" ",1)[0]
+			status = ['creator', 'administrator', 'member']
+			for chri in status:
+				if chri == bot.get_chat_member(chat_id=str(channel), user_id="@azoqilbot").status:
+					newchannel(message,channel)
+					break
+				else:
+					bot.send_message(message.chat.id, "Botni kanalga admin qilmadingiz.")
 
 
 # Filter for words
