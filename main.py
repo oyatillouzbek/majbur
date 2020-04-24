@@ -23,9 +23,10 @@ def getdata(message):
 	cursorr.execute("SELECT kanal FROM grs WHERE grid=" + chatidd)
 	resultt = cursorr.fetchall()
 	for x in resultt:
-		msg += "{}\n".format(x[0])
+		msg += "{}\n".format(x)
 	if msg is None:
 		bot.send_message(message.chat.id, "Hech narsa yoq")
+		connection.close()
 	else:
 		bot.send_message(message.chat.id, msg)
 		connection.close()
@@ -45,6 +46,7 @@ def newchannel(message,chan):
         sql_update_query = """INSERT INTO grs (grid, userid, kanal) VALUES (%s, %s, %s)"""
         cursor.execute(sql_update_query, (message.chat.id,message.from_user.id,channe))
         bot.send_message(message.chat.id, "Guruhingiz kanalingizga ulandi." + msg)
+        connection.close()
     else:
         sql_update_query = """Update grs set kanal = %s where grid = %s"""
         cursor.execute(sql_update_query, (channe, message.chat.id))
